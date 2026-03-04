@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录 - 平台管理系统</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="login-box">
+            <div class="logo">
+                <div class="logo-icon">🔐</div>
+                <h1>平台管理系统</h1>
+                <p class="subtitle">安全 · 高效 · 智能</p>
+            </div>
+
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label for="username">用户名</label>
+                    <input type="text" id="username" name="username" placeholder="请输入用户名" required autocomplete="username">
+                    <span class="error-message" id="usernameError"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">密码</label>
+                    <input type="password" id="password" name="password" placeholder="请输入密码" required autocomplete="current-password">
+                    <span class="error-message" id="passwordError"></span>
+                </div>
+
+                <div class="form-options">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="rememberMe">
+                        <span>记住我</span>
+                    </label>
+                    <a href="#" class="forgot-password">忘记密码？</a>
+                </div>
+
+                <button type="submit" class="btn-submit" id="loginBtn">
+                    <span class="btn-text">登 录</span>
+                    <span class="loading-spinner" style="display: none;"></span>
+                </button>
+
+                <div class="form-footer">
+                    <p>还没有账号？<a href="/register.html" class="link">立即注册</a></p>
+                </div>
+            </form>
+
+            <div id="messageBox" class="message-box" style="display: none;">
+                <span class="message-icon"></span>
+                <span class="message-text"></span>
+            </div>
+        </div>
+
+        <div class="background-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+        </div>
+    </div>
+
+    <script src="/static/js/login.js"></script>
+</body>
+</html>

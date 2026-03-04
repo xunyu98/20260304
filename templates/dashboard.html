@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>仪表盘 - 平台管理系统</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- 顶部导航栏 -->
+        <header class="top-nav">
+            <div class="nav-left">
+                <div class="logo-small">🔐</div>
+                <span class="app-title">平台管理系统</span>
+            </div>
+            <div class="nav-right">
+                <div class="user-menu">
+                    <span class="welcome-text">欢迎，<strong id="currentUsername">用户</strong></span>
+                    <button class="btn-logout" id="logoutBtn">退出登录</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- 主内容区 -->
+        <main class="dashboard-main">
+            <div class="content-wrapper">
+                <div class="welcome-card">
+                    <h1>👋 欢迎回来！</h1>
+                    <p>今天是 <span id="currentDate"></span>，祝您工作愉快！</p>
+                </div>
+
+                <div class="info-cards">
+                    <div class="info-card">
+                        <div class="card-icon">👤</div>
+                        <h3>账户信息</h3>
+                        <div class="card-content" id="userInfo">
+                            <p>加载中...</p>
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="card-icon">📊</div>
+                        <h3>系统状态</h3>
+                        <div class="card-content">
+                            <p>✅ 系统运行正常</p>
+                            <p>🕒 服务时间：24/7</p>
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="card-icon">🔒</div>
+                        <h3>安全提示</h3>
+                        <div class="card-content">
+                            <p>• 请定期更换密码</p>
+                            <p>• 不要泄露验证码</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="quick-actions">
+                    <h2>快捷操作</h2>
+                    <div class="action-buttons">
+                        <button class="action-btn">
+                            <span class="btn-icon">📝</span>
+                            <span>个人信息</span>
+                        </button>
+                        <button class="action-btn">
+                            <span class="btn-icon">🔑</span>
+                            <span>修改密码</span>
+                        </button>
+                        <button class="action-btn">
+                            <span class="btn-icon">📜</span>
+                            <span>操作日志</span>
+                        </button>
+                        <button class="action-btn">
+                            <span class="btn-icon">⚙️</span>
+                            <span>系统设置</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="/static/js/dashboard.js"></script>
+</body>
+</html>

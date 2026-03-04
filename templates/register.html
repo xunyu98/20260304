@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注册 - 平台管理系统</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="login-box">
+            <div class="logo">
+                <div class="logo-icon">🔐</div>
+                <h1>创建账号</h1>
+                <p class="subtitle">加入我们，开启高效管理之旅</p>
+            </div>
+
+            <form id="registerForm" class="login-form">
+                <div class="form-group">
+                    <label for="username">用户名 <span class="required">*</span></label>
+                    <input type="text" id="username" name="username" placeholder="至少 3 个字符" required autocomplete="username">
+                    <span class="error-message" id="usernameError"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">邮箱地址</label>
+                    <input type="email" id="email" name="email" placeholder="your@email.com" autocomplete="email">
+                    <span class="error-message" id="emailError"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">密码 <span class="required">*</span></label>
+                    <input type="password" id="password" name="password" placeholder="至少 6 个字符" required autocomplete="new-password">
+                    <span class="error-message" id="passwordError"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">确认密码 <span class="required">*</span></label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="再次输入密码" required autocomplete="new-password">
+                    <span class="error-message" id="confirmPasswordError"></span>
+                </div>
+
+                <div class="form-options">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="agreeTerms" required>
+                        <span>我已阅读并同意 <a href="#" class="link">服务条款</a> 和 <a href="#" class="link">隐私政策</a></span>
+                    </label>
+                </div>
+
+                <button type="submit" class="btn-submit" id="registerBtn">
+                    <span class="btn-text">注 册</span>
+                    <span class="loading-spinner" style="display: none;"></span>
+                </button>
+
+                <div class="form-footer">
+                    <p>已有账号？<a href="/login.html" class="link">立即登录</a></p>
+                </div>
+            </form>
+
+            <div id="messageBox" class="message-box" style="display: none;">
+                <span class="message-icon"></span>
+                <span class="message-text"></span>
+            </div>
+        </div>
+
+        <div class="background-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+        </div>
+    </div>
+
+    <script src="/static/js/register.js"></script>
+</body>
+</html>
