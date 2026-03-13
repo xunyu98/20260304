@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, session, redirect, url_for
+from flask import Flask, render_template, request, jsonify, session, redirect, url_for, make_response
 from functools import wraps
 import hashlib
 import json
@@ -36,6 +36,17 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
+def no_cache(f):
+    """禁止页面缓存装饰器 - 防止用户回退到登录页"""
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        response = make_response(f(*args, **kwargs))
+        response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+        response.headers['Pragma'] = 'no-cache'
+        response.headers['Expires'] = '0'
+        return response
+    return decorated_function
+
 @app.route('/')
 def index():
     """首页"""
@@ -44,6 +55,7 @@ def index():
     return render_template('login.html')
 
 @app.route('/login.html')
+@no_cache
 def login_page():
     """登录页面"""
     if 'user' in session:
@@ -51,6 +63,7 @@ def login_page():
     return render_template('login.html')
 
 @app.route('/register.html')
+@no_cache
 def register_page():
     """注册页面"""
     if 'user' in session:

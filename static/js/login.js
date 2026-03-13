@@ -78,7 +78,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // 延迟跳转到仪表盘
                 setTimeout(() => {
-                    window.location.href = '/dashboard';
+                    // 使用 replaceState 替换当前历史记录，防止用户回退到登录页
+                    window.location.replace('/dashboard');
                 }, 1000);
             } else {
                 showMessage(data.message || '登录失败', 'error');
