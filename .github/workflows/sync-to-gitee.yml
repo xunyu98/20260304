@@ -2,31 +2,69 @@ name: 🔄 Auto Sync to Gitee (SSH)
 
 on:
   push:
-    branches: [main, master, develop]  # 根据你的分支名调整！
+    branches: [main, master, develop]
   schedule:
-    - cron: '0 2,8,14,20 * * *'  # UTC+8 时区参考：国内建议用此时间点
+    - cron: '0 2,8,14,20 * * *'
 
 jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
       - name: 📥 Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5  # 升级到 v5 支持 Node 24
         with:
-          fetch-depth: 0  # 拉取完整历史（含所有分支/标签）
+          fetch-depth: 0
 
-      - name: 🔑 Setup SSH for Gitee
+      - name: 🔑 Setup SSH for Gitee (Fixed)
         env:
           SSH_KEY: ${{ secrets.GITEE_SSH_PRIVATE_KEY }}
         run: |
+          # 1. 创建 SSH 目录并设置权限
           mkdir -p ~/.ssh
-          printf "%s" "$SSH_KEY" > ~/.ssh/id_ed25519
+          chmod 700 ~/.ssh
+          
+          # 2. 写入密钥（使用 echo -e 确保换行正确，覆盖写入）
+          echo -e "$SSH_KEY" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
-          ssh-keyscan gitee.com >> ~/.ssh/known_hosts
-          # 调试：验证 SSH 连通性（首次运行保留，成功后可删）
-          ssh -T git@gitee.com 2>&1 | grep -E "(Hi|成功|Success)"
+          
+          # 3. 添加 Gitee 主机密钥
+          ssh-keyscan -H gitee.com >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+          
+          # 4. 严格模式测试 SSH 连接（失败则直接退出）
+          echo "🔌 Testing Gitee SSH connection..."
+          if ! ssh -T git@gitee.com; then
+            echo "❌ SSH connection failed! Please check GITEA_SSH_PRIVATE_KEY secret."
+            exit 1
+          fi
 
-      - name: 🚀 Push to Gitee
+      - name: 🚀 Push to Gitee (Fixed)
         run: |
-          git remote add gitee git@gitee.com:xunyu98/20260304.git 2>/dev/null || true
-          git push --force --prune gitee "refs/remotes/origin/*:refs/heads/*" "refs/tags/*:refs/tags/*"
+          # 1. 配置 Git 全局信息（必须设置，否则推送失败）
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "actions@users.noreply.github.com"
+          
+          # 2. 移除旧的 Gitee 远程（如果存在），避免冲突
+          git remote remove gitee 2>/dev/null || true
+          
+          # 3. 添加新的 Gitee 远程仓库
+          git remote add gitee git@gitee.com:xunyu98/20260304.git
+          
+          # 4. 拉取 Gitee 远程引用（防止冲突）
+          git fetch gitee
+          
+          # 5. 推送指定分支（只推你需要的分支，安全可控）
+          echo "🚀 Pushing code to Gitee..."
+          for BRANCH in main master develop; do
+            # 检查本地分支是否存在
+            if git rev-parse --verify "$BRANCH" >/dev/null 2>&1; then
+              echo "Pushing $BRANCH..."
+              git push -f gitee "$BRANCH"
+            else
+              echo "⚠️  Branch $BRANCH not found, skipped."
+            fi
+          done
+          
+          # 6. 推送标签
+          echo "Pushing tags..."
+          git push gitee --tags
