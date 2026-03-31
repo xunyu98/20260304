@@ -11,60 +11,49 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 📥 Checkout code
-        uses: actions/checkout@v5  # 升级到 v5 支持 Node 24
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
-      - name: 🔑 Setup SSH for Gitee (Fixed)
+      - name: 🔑 Setup SSH for Gitee (Final Fix)
         env:
           SSH_KEY: ${{ secrets.GITEE_SSH_PRIVATE_KEY }}
         run: |
-          # 1. 创建 SSH 目录并设置权限
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
           
-          # 2. 写入密钥（使用 echo -e 确保换行正确，覆盖写入）
-          echo -e "$SSH_KEY" > ~/.ssh/id_ed25519
+          # 🔥 关键修复：使用 printf 精确写入，禁止解析转义字符
+          printf "%s" "$SSH_KEY" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
           
-          # 3. 添加 Gitee 主机密钥
           ssh-keyscan -H gitee.com >> ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
           
-          # 4. 严格模式测试 SSH 连接（失败则直接退出）
+          # 强制修复密钥权限（针对 Runner 特殊环境）
+          sudo chown -R $USER:$USER ~/.ssh
+          
           echo "🔌 Testing Gitee SSH connection..."
+          # 严格检查连接，失败立即退出
           if ! ssh -T git@gitee.com; then
-            echo "❌ SSH connection failed! Please check GITEA_SSH_PRIVATE_KEY secret."
+            echo "❌ SSH connection failed! Please check GITEE_SSH_PRIVATE_KEY secret."
             exit 1
           fi
 
-      - name: 🚀 Push to Gitee (Fixed)
+      - name: 🚀 Push to Gitee
         run: |
-          # 1. 配置 Git 全局信息（必须设置，否则推送失败）
           git config --global user.name "GitHub Actions Bot"
           git config --global user.email "actions@users.noreply.github.com"
           
-          # 2. 移除旧的 Gitee 远程（如果存在），避免冲突
           git remote remove gitee 2>/dev/null || true
-          
-          # 3. 添加新的 Gitee 远程仓库
           git remote add gitee git@gitee.com:xunyu98/20260304.git
           
-          # 4. 拉取 Gitee 远程引用（防止冲突）
           git fetch gitee
           
-          # 5. 推送指定分支（只推你需要的分支，安全可控）
-          echo "🚀 Pushing code to Gitee..."
           for BRANCH in main master develop; do
-            # 检查本地分支是否存在
             if git rev-parse --verify "$BRANCH" >/dev/null 2>&1; then
               echo "Pushing $BRANCH..."
               git push -f gitee "$BRANCH"
-            else
-              echo "⚠️  Branch $BRANCH not found, skipped."
             fi
           done
           
-          # 6. 推送标签
-          echo "Pushing tags..."
           git push gitee --tags
