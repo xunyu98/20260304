@@ -28,5 +28,5 @@ jobs:
 
       - name: 🚀 Push to Gitee
         run: |
-          git remote add gitee git@gitee.com:你的Gitee用户名/仓库名.git 2>/dev/null || true
+          git remote add gitee git@gitee.com:xunyu98/20260304.git 2>/dev/null || true
           git push --force --prune gitee "refs/remotes/origin/*:refs/heads/*" "refs/tags/*:refs/tags/*"
