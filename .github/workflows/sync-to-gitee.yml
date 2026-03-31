@@ -17,25 +17,19 @@ jobs:
 
       - name: 🔑 Setup SSH for Gitee (Final Fix)
         env:
-          SSH_KEY: ${{ secrets.GITEE_SSH_PRIVATE_KEY }}
+          SSH_KEY_B64: ${{ secrets.GITEE_SSH_PRIVATE_KEY }}
         run: |
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
-          
-          # 🔥 关键修复：使用 printf 精确写入，禁止解析转义字符
-          printf "%s" "$SSH_KEY" > ~/.ssh/id_ed25519
+    
+          # 从 base64 还原成多行格式的私钥
+          echo "$SSH_KEY_B64" | base64 -d > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
-          
           ssh-keyscan -H gitee.com >> ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
-          
-          # 强制修复密钥权限（针对 Runner 特殊环境）
-          sudo chown -R $USER:$USER ~/.ssh
-          
           echo "🔌 Testing Gitee SSH connection..."
-          # 严格检查连接，失败立即退出
           if ! ssh -T git@gitee.com; then
-            echo "❌ SSH connection failed! Please check GITEE_SSH_PRIVATE_KEY secret."
+            echo "❌ SSH connection failed!"
             exit 1
           fi
 
