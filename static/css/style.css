@@ -13,6 +13,8 @@ body {
     align-items: center;
     justify-content: center;
     overflow-x: hidden;
+    /* 桌面端固定布局，不随窗口缩放 */
+    min-width: 1280px;
 }
 
 /* 容器 */
@@ -24,6 +26,8 @@ body {
     justify-content: center;
     padding: 20px;
     position: relative;
+    /* 固定最小宽度，确保桌面端最佳显示效果 */
+    min-width: 1280px;
 }
 
 /* 登录框 */
@@ -31,8 +35,8 @@ body {
     background: rgba(255, 255, 255, 0.98);
     border-radius: 20px;
     padding: 50px 40px;
-    width: 100%;
-    max-width: 450px;
+    width: 500px;
+    max-width: 500px;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(10px);
     animation: slideIn 0.5s ease-out;
@@ -342,6 +346,8 @@ body {
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    /* 桌面端固定布局 */
+    min-width: 1280px;
 }
 
 .nav-left {
@@ -394,6 +400,7 @@ body {
     box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
 }
 
+/* 仪表盘主内容区 */
 .dashboard-main {
     padding: 40px;
     max-width: 1400px;
@@ -436,7 +443,8 @@ body {
 
 .info-cards {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    /* 桌面端固定 3 列布局 */
+    grid-template-columns: repeat(3, 1fr);
     gap: 25px;
     margin-bottom: 30px;
 }
@@ -486,7 +494,8 @@ body {
 
 .action-buttons {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    /* 桌面端固定 4 列布局 */
+    grid-template-columns: repeat(4, 1fr);
     gap: 20px;
 }
 
@@ -515,37 +524,224 @@ body {
     margin-bottom: 10px;
 }
 
-/* 响应式设计 */
-@media (max-width: 768px) {
-    body {
-        padding: 20px;
-    }
+/* 用户资料链接样式 */
+.user-profile-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 15px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    margin-left: 20px;
+    opacity: 0;
+    pointer-events: none;
+}
 
-    .login-box {
-        padding: 40px 30px;
-    }
+.user-profile-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
 
-    .top-nav {
-        padding: 15px 20px;
-        flex-direction: column;
-        gap: 15px;
-    }
+.user-avatar {
+    font-size: 20px;
+}
 
-    .nav-left,
-    .nav-right {
-        width: 100%;
-        justify-content: center;
-    }
+.user-profile-link strong {
+    font-size: 14px;
+    font-weight: 600;
+}
 
-    .dashboard-main {
-        padding: 20px;
-    }
+/* 返回按钮样式 */
+.back-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    margin-right: 15px;
+}
 
-    .info-cards {
-        grid-template-columns: 1fr;
-    }
+.back-btn:hover {
+    transform: translateX(-3px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
 
-    .action-buttons {
-        grid-template-columns: repeat(2, 1fr);
+.back-icon {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* 个人信息卡片样式 */
+.profile-card {
+    background: white;
+    border-radius: 15px;
+    padding: 40px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.profile-header {
+    text-align: center;
+    padding-bottom: 30px;
+    border-bottom: 2px solid #e0e0e0;
+    margin-bottom: 30px;
+}
+
+.profile-avatar {
+    font-size: 80px;
+    margin-bottom: 15px;
+}
+
+.profile-header h1 {
+    font-size: 32px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.profile-role {
+    font-size: 18px;
+    color: #666;
+    padding: 8px 20px;
+    border-radius: 20px;
+    display: inline-block;
+    font-weight: 600;
+}
+
+.profile-role.role-admin {
+    background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+    color: white;
+}
+
+.profile-role.role-user {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+/* 详细信息列表 */
+.profile-details {
+    display: grid;
+    gap: 25px;
+}
+
+.detail-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.detail-item:hover {
+    background: #e9ecef;
+    transform: translateX(5px);
+}
+
+.detail-icon {
+    font-size: 32px;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 12px;
+    color: white;
+}
+
+.detail-content {
+    flex: 1;
+}
+
+.detail-content label {
+    display: block;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.detail-content p {
+    font-size: 18px;
+    color: #333;
+    margin: 0;
+    font-weight: 500;
+}
+
+/* 消息提示动画 */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -20px);
     }
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+}
+
+/* 平台特性网格 */
+.platform-features {
+    margin-top: 40px;
+}
+
+.platform-features h2 {
+    text-align: center;
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 40px;
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+.feature-item {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.feature-item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.feature-icon {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.feature-item h3 {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.feature-item p {
+    color: #666;
+    line-height: 1.6;
+}
+
+/* 修复用户菜单布局 */
+.user-menu {
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }

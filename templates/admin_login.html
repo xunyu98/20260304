@@ -2,27 +2,27 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>测试平台</title>
+    <title>测试平台 - 用户管理平台</title>
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
     <div class="container">
         <div class="login-box">
             <div class="logo">
-                <div class="logo-icon">🔐</div>
-                <h1>测试平台</h1>
-                <p class="subtitle">安全 · 高效 · 智能</p>
+                <div class="logo-icon">👥</div>
+                <h1>用户管理平台</h1>
+                <!-- <p class="subtitle">管理员专属入口</p> -->
             </div>
 
             <form id="loginForm" class="login-form">
                 <div class="form-group">
-                    <label for="username">用户名</label>
-                    <input type="text" id="username" name="username" placeholder="请输入用户名" required autocomplete="username">
+                    <label for="username">管理员账号</label>
+                    <input type="text" id="username" name="username" placeholder="请输入管理员账号" required autocomplete="username">
                     <span class="error-message" id="usernameError"></span>
                 </div>
 
                 <div class="form-group">
-                    <label for="password">密码</label>
+                    <label for="password">管理员密码</label>
                     <input type="password" id="password" name="password" placeholder="请输入密码" required autocomplete="current-password">
                     <span class="error-message" id="passwordError"></span>
                 </div>
@@ -32,7 +32,7 @@
                         <input type="checkbox" id="rememberMe">
                         <span>记住我</span>
                     </label>
-                    <a href="#" class="forgot-password">忘记密码？</a>
+                    <a href="#" class="forgot-password">忘记密码？联系系统管理员</a>
                 </div>
 
                 <button type="submit" class="btn-submit" id="loginBtn">
@@ -41,7 +41,7 @@
                 </button>
 
                 <div class="form-footer">
-                    <p>还没有账号？<a href="/register.html" class="link">立即注册</a></p>
+                    <p>返回 <a href="/login.html" class="link">平台登录页</a></p>
                 </div>
             </form>
 
@@ -58,6 +58,6 @@
         </div>
     </div>
 
-    <script src="/static/js/login.js"></script>
+    <script src="/static/js/admin_login.js"></script>
 </body>
 </html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>测试平台 - 平台管理系统</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- 顶部导航栏 -->
+        <header class="top-nav">
+            <div class="nav-left">
+                <div class="logo-small">🔐</div>
+                <span class="app-title">用户管理平台</span>
+            </div>
+            <div class="nav-right">
+                <div class="user-menu">
+                    <span class="welcome-text">管理员：<strong id="currentUsername">管理员</strong></span>
+                    <button class="btn-logout" id="logoutBtn">退出登录</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- 主内容区 -->
+        <main class="dashboard-main">
+            <div class="content-wrapper">
+                <div class="welcome-card">
+                    <h1>👥 用户管理</h1>
+                    <!-- <p>管理系统所有用户账号</p> -->
+                </div>
+
+                <!-- 搜索区域 -->
+                <div class="search-bar" style="background: white; padding: 25px; border-radius: 15px; margin-bottom: 30px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+                    <div style="display: flex; gap: 15px; align-items: center;">
+                        <input type="text" id="searchInput" placeholder="搜索用户名或邮箱..." 
+                               style="flex: 1; padding: 12px 18px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; outline: none;">
+                        <select id="roleFilter" style="padding: 12px 18px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; outline: none;">
+                            <option value="">所有角色</option>
+                            <option value="admin">管理员</option>
+                            <option value="user">普通用户</option>
+                        </select>
+                        <button onclick="searchUsers()" style="padding: 12px 30px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500;">
+                            🔍 搜索
+                        </button>
+                        <button onclick="loadAllUsers()" style="padding: 12px 30px; background: linear-gradient(135deg, #50c9c3 0%, #96deda 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500;">
+                            🔄 刷新
+                        </button>
+                        <button onclick="showBatchAddModal()" style="padding: 12px 30px; background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500;">
+                            ➕ 批量新增
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 用户列表表格 -->
+                <div style="background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse; min-width: 800px;">
+                        <thead>
+                            <tr style="border-bottom: 2px solid #e0e0e0;">
+                                <th style="padding: 15px; text-align: left; color: #555; font-size: 14px; font-weight: 600;">用户名</th>
+                                <th style="padding: 15px; text-align: left; color: #555; font-size: 14px; font-weight: 600;">邮箱</th>
+                                <th style="padding: 15px; text-align: left; color: #555; font-size: 14px; font-weight: 600;">角色</th>
+                                <th style="padding: 15px; text-align: left; color: #555; font-size: 14px; font-weight: 600;">注册时间</th>
+                                <th style="padding: 15px; text-align: left; color: #555; font-size: 14px; font-weight: 600;">最后登录</th>
+                                <th style="padding: 15px; text-align: center; color: #555; font-size: 14px; font-weight: 600;">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="userTableBody">
+                            <tr>
+                                <td colspan="6" style="padding: 40px; text-align: center; color: #999;">
+                                    <span style="font-size: 48px; display: block; margin-bottom: 10px;">⏳</span>
+                                    加载中...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 编辑角色弹窗 -->
+    <div id="editRoleModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
+        <div style="background: white; padding: 40px; border-radius: 15px; width: 450px; max-width: 90%;">
+            <h2 style="margin-bottom: 25px; color: #333; font-size: 24px;">修改用户角色</h2>
+            <p style="margin-bottom: 20px; color: #666;">当前用户：<strong id="editRoleUsername"></strong></p>
+            <div style="margin-bottom: 25px;">
+                <label style="display: block; margin-bottom: 8px; color: #555; font-size: 14px;">选择角色</label>
+                <select id="newRole" style="width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; outline: none;">
+                    <option value="user">普通用户</option>
+                    <option value="admin">管理员</option>
+                </select>
+            </div>
+            <div style="display: flex; gap: 12px; justify-content: flex-end;">
+                <button onclick="closeEditRoleModal()" style="padding: 12px 25px; background: #e0e0e0; color: #666; border: none; border-radius: 8px; cursor: pointer; font-size: 14px;">取消</button>
+                <button onclick="saveRole()" style="padding: 12px 25px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500;">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 重置密码弹窗 -->
+    <div id="resetPasswordModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
+        <div style="background: white; padding: 40px; border-radius: 15px; width: 450px; max-width: 90%;">
+            <h2 style="margin-bottom: 25px; color: #333; font-size: 24px;">重置密码</h2>
+            <p style="margin-bottom: 20px; color: #666;">用户：<strong id="resetPasswordUsername"></strong></p>
+            <div style="margin-bottom: 25px;">
+                <label style="display: block; margin-bottom: 8px; color: #555; font-size: 14px;">新密码</label>
+                <input type="password" id="newPassword" placeholder="至少 6 个字符" style="width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; outline: none;">
+            </div>
+            <div style="margin-bottom: 25px;">
+                <label style="display: block; margin-bottom: 8px; color: #555; font-size: 14px;">确认密码</label>
+                <input type="password" id="confirmPassword" placeholder="再次输入新密码" style="width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; outline: none;">
+            </div>
+            <div style="display: flex; gap: 12px; justify-content: flex-end;">
+                <button onclick="closeResetPasswordModal()" style="padding: 12px 25px; background: #e0e0e0; color: #666; border: none; border-radius: 8px; cursor: pointer; font-size: 14px;">取消</button>
+                <button onclick="saveNewPassword()" style="padding: 12px 25px; background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500;">重置密码</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 批量新增用户弹窗 -->
+    <div id="batchAddModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
+        <div style="background: white; padding: 40px; border-radius: 15px; width: 800px; max-width: 90%; max-height: 80vh; overflow-y: auto;">
+            <h2 style="margin-bottom: 25px; color: #333; font-size: 24px;">➕ 批量新增用户</h2>
+            
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 8px; color: #555; font-size: 14px;">默认密码</label>
+                <input type="text" id="defaultPassword" placeholder="所有用户的初始密码（至少 6 位）" 
+                       style="width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; outline: none;">
+                <p style="color: #999; font-size: 12px; margin-top: 5px;">💡 提示：所有批量添加的用户将使用相同的初始密码</p>
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 8px; color: #555; font-size: 14px;">默认角色</label>
+                <select id="defaultRole" style="width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; outline: none;">
+                    <option value="user">普通用户</option>
+                    <option value="admin">管理员</option>
+                </select>
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <label style="color: #555; font-size: 14px;">用户列表（格式：用户名，邮箱）</label>
+                    <button onclick="addUserInput()" style="padding: 8px 15px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 13px;">
+                        ➕ 添加一行
+                    </button>
+                </div>
+                <div id="userInputsContainer" style="max-height: 300px; overflow-y: auto; border: 2px solid #e0e0e0; border-radius: 8px; padding: 15px;">
+                    <!-- 动态生成的输入行 -->
+                </div>
+                <p style="color: #999; font-size: 12px; margin-top: 5px;">💡 提示：每行输入一个用户信息，格式：用户名，邮箱（邮箱可选）</p>
+            </div>
+
+            <div style="display: flex; gap: 12px; justify-content: flex-end;">
+                <button onclick="closeBatchAddModal()" style="padding: 12px 25px; background: #e0e0e0; color: #666; border: none; border-radius: 8px; cursor: pointer; font-size: 14px;">取消</button>
+                <button onclick="batchAddUsers()" style="padding: 12px 25px; background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500;">
+                    🚀 开始批量添加
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 消息提示框 -->
+    <div id="messageBox" style="display: none; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: white; padding: 15px 30px; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); z-index: 2000; animation: slideDown 0.3s ease-out;">
+        <span class="message-icon" style="margin-right: 12px;"></span>
+        <span class="message-text"></span>
+    </div>
+
+    <script src="/static/js/admin_users.js"></script>
+</body>
+</html>

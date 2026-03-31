@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>仪表盘 - 平台管理系统</title>
+    <title>测试平台</title>
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
@@ -12,11 +12,14 @@
         <header class="top-nav">
             <div class="nav-left">
                 <div class="logo-small">🔐</div>
-                <span class="app-title">平台管理系统</span>
+                <span class="app-title">测试平台</span>
             </div>
             <div class="nav-right">
                 <div class="user-menu">
-                    <span class="welcome-text">欢迎，<strong id="currentUsername">用户</strong></span>
+                    <a href="/profile.html" class="user-profile-link" id="userProfileLink" style="opacity: 0; pointer-events: none;">
+                        <span class="user-avatar">👤</span>
+                        <strong id="currentUsername">用户</strong>
+                    </a>
                     <button class="btn-logout" id="logoutBtn">退出登录</button>
                 </div>
             </div>
@@ -26,57 +29,65 @@
         <main class="dashboard-main">
             <div class="content-wrapper">
                 <div class="welcome-card">
-                    <h1>👋 欢迎回来！</h1>
-                    <p>今天是 <span id="currentDate"></span>，祝您工作愉快！</p>
+                    <h1>👋 欢迎使用测试平台</h1>
+                    <p>安全可靠的企业级身份验证解决方案</p>
                 </div>
 
                 <div class="info-cards">
                     <div class="info-card">
-                        <div class="card-icon">👤</div>
-                        <h3>账户信息</h3>
-                        <div class="card-content" id="userInfo">
-                            <p>加载中...</p>
+                        <div class="card-icon">🛡️</div>
+                        <h3>安全保障</h3>
+                        <div class="card-content">
+                            <p>采用SHA256加密算法</p>
+                            <p>防SQL注入攻击</p>
+                            <p>安全会话管理</p>
                         </div>
                     </div>
 
                     <div class="info-card">
-                        <div class="card-icon">📊</div>
-                        <h3>系统状态</h3>
+                        <div class="card-icon">⚡</div>
+                        <h3>高性能</h3>
                         <div class="card-content">
-                            <p>✅ 系统运行正常</p>
-                            <p>🕒 服务时间：24/7</p>
+                            <p>数据库连接池优化</p>
+                            <p>响应时间 < 100ms</p>
+                            <p>支持高并发访问</p>
                         </div>
                     </div>
 
                     <div class="info-card">
-                        <div class="card-icon">🔒</div>
-                        <h3>安全提示</h3>
+                        <div class="card-icon">🔧</div>
+                        <h3>技术栈</h3>
                         <div class="card-content">
-                            <p>• 请定期更换密码</p>
-                            <p>• 不要泄露验证码</p>
+                            <p>Flask + MySQL + Vue.js</p>
+                            <p>桌面端优化设计</p>
+                            <p>响应式数据绑定</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="quick-actions">
-                    <h2>快捷操作</h2>
-                    <div class="action-buttons">
-                        <button class="action-btn">
-                            <span class="btn-icon">📝</span>
-                            <span>个人信息</span>
-                        </button>
-                        <button class="action-btn">
-                            <span class="btn-icon">🔑</span>
-                            <span>修改密码</span>
-                        </button>
-                        <button class="action-btn">
-                            <span class="btn-icon">📜</span>
-                            <span>操作日志</span>
-                        </button>
-                        <button class="action-btn">
-                            <span class="btn-icon">⚙️</span>
-                            <span>系统设置</span>
-                        </button>
+                <div class="platform-features">
+                    <h2>平台功能特性</h2>
+                    <div class="feature-grid">
+                        <div class="feature-item">
+                            <div class="feature-icon">🔐</div>
+                            <h3>用户认证</h3>
+                            <p>安全的用户注册与登录机制，支持密码强度验证</p>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">📋</div>
+                            <h3>信息管理</h3>
+                            <p>完善的用户信息展示与个人资料管理</p>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">👥</div>
+                            <h3>权限控制</h3>
+                            <p>基于角色的访问控制(RBAC)，支持管理员功能</p>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">📈</div>
+                            <h3>系统监控</h3>
+                            <p>实时监控系统状态，保障服务稳定运行</p>
+                        </div>
                     </div>
                 </div>
             </div>

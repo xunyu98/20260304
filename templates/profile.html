@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人信息 - 测试平台</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- 顶部导航栏 -->
+        <header class="top-nav">
+            <div class="nav-left">
+                <a href="/dashboard" class="back-btn" title="返回仪表盘">
+                    <span class="back-icon">←</span>
+                </a>
+                <div class="logo-small">🔐</div>
+                <span class="app-title">个人信息</span>
+            </div>
+            <div class="nav-right">
+                <div class="user-menu">
+                    <button class="btn-logout" id="logoutBtn">退出登录</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- 主内容区 -->
+        <main class="dashboard-main">
+            <div class="content-wrapper">
+                <div class="profile-card">
+                    <div class="profile-header">
+                        <div class="profile-avatar">👤</div>
+                        <h1 id="profileUsername">用户名</h1>
+                        <p class="profile-role" id="profileRole">角色</p>
+                    </div>
+
+                    <div class="profile-details">
+                        <div class="detail-item">
+                            <div class="detail-icon">📧</div>
+                            <div class="detail-content">
+                                <label>邮箱地址</label>
+                                <p id="profileEmail">未设置</p>
+                            </div>
+                        </div>
+
+                        <div class="detail-item">
+                            <div class="detail-icon">📅</div>
+                            <div class="detail-content">
+                                <label>注册时间</label>
+                                <p id="profileCreatedAt">-</p>
+                            </div>
+                        </div>
+
+                        <div class="detail-item">
+                            <div class="detail-icon">🕒</div>
+                            <div class="detail-content">
+                                <label>最后登录</label>
+                                <p id="profileLastLogin">从未登录</p>
+                            </div>
+                        </div>
+
+                        <div class="detail-item">
+                            <div class="detail-icon">🔐</div>
+                            <div class="detail-content">
+                                <label>账户角色</label>
+                                <p id="profileRoleDetail">普通用户</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="/static/js/profile.js"></script>
+</body>
+</html>
